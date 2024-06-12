@@ -1,4 +1,5 @@
 mod add_card;
+mod edit_card;
 mod utils;
 
 use add_card::add_card;

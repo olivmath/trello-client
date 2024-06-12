@@ -11,10 +11,10 @@ async fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Commands::Add(add) => add_commands(&add).await,
-        Commands::Get(get) => get_commands(&get),
-        Commands::Move(mov) => move_commands(&mov),
-        Commands::Edit(edit) => edit_commands(&edit),
-        Commands::Remove(remove) => remove_commands(&remove),
+        Commands::Add(add) => add_commands(add).await,
+        Commands::Get(get) => get_commands(get),
+        Commands::Move(mov) => move_commands(mov),
+        Commands::Edit(edit) => edit_commands(edit),
+        Commands::Remove(remove) => remove_commands(remove),
     }
 }

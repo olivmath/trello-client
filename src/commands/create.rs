@@ -1,4 +1,4 @@
-use crate::core::card::Steps;
+use crate::core::card::{Labels, Steps};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -13,8 +13,8 @@ pub enum AddSubCommands {
     Card {
         #[arg(long)]
         name: String,
-        #[arg(long)]
-        label: String,
+        #[arg(long, value_enum)]
+        label: Labels,
         #[arg(long, value_enum)]
         step: Steps,
     },

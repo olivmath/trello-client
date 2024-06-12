@@ -36,11 +36,47 @@ impl StepData {
     }
 }
 
+#[derive(Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
+pub enum Labels {
+    #[clap(alias = "pw3")]
+    ProductWeb3,
+    #[clap(alias = "bdo")]
+    BlockchainDevOps,
+    #[clap(alias = "ml")]
+    MachineLearning,
+}
+
+pub struct LabelsData;
+impl LabelsData {
+    pub fn get_color_by_id(label: &str) -> &str {
+        match label {
+            "6633a8093462cf3f04d83047" => "yellow",
+            "6633a612abab8af0d5ef1f8d" => "red",
+            "6633a8187180a66a1bdffb51" => "purple",
+            _ => panic!("label id not exist"),
+        }
+    }
+    pub fn get_id(label: &Labels) -> &str {
+        match label {
+            Labels::ProductWeb3 => "6633a8093462cf3f04d83047",
+            Labels::BlockchainDevOps => "6633a612abab8af0d5ef1f8d",
+            Labels::MachineLearning => "6633a8187180a66a1bdffb51",
+        }
+    }
+    pub fn get_color(label: &Labels) -> &str {
+        match label {
+            Labels::ProductWeb3 => "yellow",
+            Labels::BlockchainDevOps => "red",
+            Labels::MachineLearning => "purple_dark",
+        }
+    }
+}
+
 pub struct Card {}
 
 impl Card {
-    pub async fn add_card(name: &str, label: &str, step: &Steps) {
-        Trello::add_card(name, label, StepData::get_id(step)).await;
+    pub async fn add_card(name: &str, label: &Labels, step: &Steps) {
+        Trello::add_card(name, LabelsData::get_id(label), StepData::get_id(step)).await;
     }
 
     pub fn move_card(my_board: &str, next: bool, back: bool, card_id: &str) {
