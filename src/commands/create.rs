@@ -18,4 +18,8 @@ pub enum AddSubCommands {
         #[arg(long, value_enum)]
         step: Steps,
     },
+    Json {
+        #[arg(long)]
+        path: String,
+    },
 }

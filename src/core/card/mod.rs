@@ -1,5 +1,6 @@
-use crate::core::trello_reposirtory::Trello;
+use crate::core::trello_reposirtory;
 use clap::ValueEnum;
+use serde::Deserialize;
 
 #[derive(Debug)]
 enum MoveCardOptions {
@@ -7,7 +8,7 @@ enum MoveCardOptions {
     Back,
 }
 
-#[derive(Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
+#[derive(Deserialize, Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
 pub enum Steps {
     Backlog,
     PreProduction,
@@ -36,7 +37,7 @@ impl StepData {
     }
 }
 
-#[derive(Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
+#[derive(Deserialize, Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
 pub enum Labels {
     #[clap(alias = "pw3")]
     ProductWeb3,
@@ -76,7 +77,12 @@ pub struct Card {}
 
 impl Card {
     pub async fn add_card(name: &str, label: &Labels, step: &Steps) {
-        Trello::add_card(name, LabelsData::get_id(label), StepData::get_id(step)).await;
+        trello_reposirtory::add_card::add_card(
+            name,
+            LabelsData::get_id(label),
+            StepData::get_id(step),
+        )
+        .await;
     }
 
     pub fn move_card(my_board: &str, next: bool, back: bool, card_id: &str) {

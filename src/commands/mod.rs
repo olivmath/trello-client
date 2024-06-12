@@ -8,6 +8,7 @@ use crate::commands::delete::RemoveSubCommands;
 use crate::commands::read::GetSubCommands;
 use crate::commands::update::{EditSubCommands, MoveSubCommands};
 use crate::core::card::Card;
+use crate::core::json_reader;
 use clap::{Parser, Subcommand};
 use create::AddCommands;
 use delete::RemoveCommands;
@@ -39,6 +40,9 @@ pub async fn add_commands(add: &AddCommands) {
     match &add.add_command {
         AddSubCommands::Card { name, label, step } => {
             Card::add_card(name, label, step).await;
+        }
+        AddSubCommands::Json { path } => {
+            json_reader::process_cads_from_json(path).await;
         }
     }
 }
