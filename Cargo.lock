@@ -1331,6 +1331,7 @@ dependencies = [
  "clap",
  "dotenv",
  "reqwest",
+ "serde",
  "serde_json",
  "tokio",
 ]

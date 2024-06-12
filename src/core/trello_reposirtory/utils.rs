@@ -2,8 +2,15 @@ use reqwest::{
     header::{HeaderMap, HeaderValue},
     Client, Error, Response,
 };
-use serde_json::Value;
+use serde::Deserialize;
 use std::{collections::HashMap, env::var};
+
+#[derive(Deserialize, Debug)]
+pub struct CardResponse {
+    id: String,
+    #[serde(rename = "shortUrl")]
+    short_url: String,
+}
 
 fn get_headers() -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -36,21 +43,24 @@ fn get_client() -> Client {
 async fn handle_response(response: Result<Response, Error>) {
     match response {
         Ok(r) => {
-            let json: Result<Value, _> = r.json().await;
-            match json {
-                Ok(value) => {
-                    println!("✅ Card created with success!");
-                    if let Some(short_url) = value["shortUrl"].as_str() {
-                        println!("🔗 See here: {}", short_url);
-                    } else {
-                        eprintln!("😢 shortUrl not found in the response, please open your board");
-                    }
+            let text = r
+                .text()
+                .await
+                .unwrap_or_else(|_| "No response body".to_string());
+            match serde_json::from_str::<CardResponse>(&text) {
+                Ok(card_response) => {
+                    println!(
+                        "✅ Card created with success, card id: {}",
+                        card_response.id
+                    );
+                    println!("🔗 See here: {}", card_response.short_url);
                 }
                 Err(e) => {
                     eprintln!("Failed to parse JSON: {:?}", e);
                 }
             }
         }
+
         Err(e) => {
             eprintln!("🚨 Create card Error");
             eprintln!("Status code: {:?}", e.status());
