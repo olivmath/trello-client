@@ -1,15 +1,7 @@
 use super::utils::{post, put};
-use crate::core::card::LabelsData;
-use serde::Deserialize;
+use crate::core::card::{Card, LabelsData};
 use serde_json::json;
 use std::env::var;
-
-#[derive(Deserialize, Debug)]
-pub struct CardResponse {
-    id: String,
-    #[serde(rename = "shortUrl")]
-    short_url: String,
-}
 
 pub(crate) async fn add_card(name: &str, label: &str, step: &str) {
     let mut base_url = var("BASE_URL").expect("BASE_URL must be set");
@@ -30,8 +22,8 @@ pub(crate) async fn add_card(name: &str, label: &str, step: &str) {
                 .text()
                 .await
                 .unwrap_or_else(|_| "No response body".to_string());
-            match serde_json::from_str::<CardResponse>(&text) {
-                Ok(CardResponse { id, short_url }) => (id, short_url),
+            match serde_json::from_str::<Card>(&text) {
+                Ok(Card { id, short_url, .. }) => (id, short_url),
                 Err(e) => {
                     eprintln!("Failed to parse JSON: {:?}", e);
                     eprintln!("{}", text);

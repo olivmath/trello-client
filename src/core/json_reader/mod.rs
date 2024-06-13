@@ -25,9 +25,7 @@ pub async fn process_cads_from_json(file_path: &str) {
         let step = card.step;
 
         // Spawn 1 thread for each card creation
-        let task = tokio::spawn(async move {
-            Card::add_card(name, label, step).await
-        });
+        let task = tokio::spawn(async move { Card::add_card(name, label, step).await });
 
         tasks.push(task);
     }

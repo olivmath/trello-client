@@ -53,12 +53,10 @@ pub async fn get_commands(get: &GetCommands) {
             all,
             step,
             id,
-        } => {
-            Card::get_card(*all, step, id).await
-        }
+            label,
+        } => Card::get_card(*all, step, label, id).await,
     }
 }
-
 
 pub fn edit_commands(edit: &EditCommands) {
     match &edit.edit_command {
