@@ -52,6 +52,9 @@ pub(super) async fn get(base_url: &str) -> Result<Response, Error> {
     client.get(base_url).query(&query).send().await
 }
 
-// pub(super) async fn delete(base_url: &str) -> Result<Response, Error> {
-//     todo!("{}", base_url)
-// }
+pub(super) async fn delete(base_url: &str) -> Result<Response, Error> {
+    let client = get_client();
+    let query = base_query();
+
+    client.delete(base_url).query(&query).send().await
+}
