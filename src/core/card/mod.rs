@@ -35,6 +35,20 @@ impl StepData {
             Steps::Completed => "6633bf98240d7b4e3ec3b4bc",
         }
     }
+
+    pub fn get_step_by_id(id: &str) -> Steps {
+        match id {
+            "6633bf10887fb53e55941192" => Steps::Backlog,
+            "6633a2169d3a4098e4adcd18" => Steps::PreProduction,
+            "6633a20b86f043945dfaed69" => Steps::VisualIdentity,
+            "6633a227d4871d117fa5fd87" => Steps::Recording,
+            "6633a2399343322d437204b7" => Steps::Review,
+            "6633bf1ce15c02de31b3797d" => Steps::Editing,
+            "6633a24310b855a087d3713a" => Steps::Publish,
+            "6633bf98240d7b4e3ec3b4bc" => Steps::Completed,
+            _ => panic!("Step id not exist"),
+        }
+    }
 }
 
 #[derive(Deserialize, Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
@@ -69,6 +83,15 @@ impl LabelsData {
             Labels::ProductWeb3 => "yellow",
             Labels::BlockchainDevOps => "red",
             Labels::MachineLearning => "purple_dark",
+        }
+    }
+
+    pub fn get_label_by_id(id: &str) -> Labels {
+        match id {
+            "6633a8093462cf3f04d83047" => Labels::ProductWeb3,
+            "6633a612abab8af0d5ef1f8d" => Labels::BlockchainDevOps,
+            "6633a8187180a66a1bdffb51" => Labels::MachineLearning,
+            _ => panic!("label id not exist"),
         }
     }
 }
