@@ -10,11 +10,9 @@ pub struct RemoveCommands {
 pub enum RemoveSubCommands {
     /// Remove a card
     Card {
-        #[arg(value_name = "my_board")]
-        my_board: String,
-        #[arg(value_name = "CARD_NAME")]
-        card_name: Option<String>,
-        #[arg(long, value_name = "CARD_ID")]
+        #[arg(long)]
+        all: bool,
+        #[arg(long)]
         id: Option<String>,
     },
 }
