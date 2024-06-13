@@ -17,7 +17,7 @@ pub enum Steps {
     Review,
     Editing,
     Publish,
-    Complete,
+    Completed,
 }
 
 pub struct StepData;
@@ -32,7 +32,7 @@ impl StepData {
             Steps::Review => "6633a2399343322d437204b7",
             Steps::Editing => "6633bf1ce15c02de31b3797d",
             Steps::Publish => "6633a24310b855a087d3713a",
-            Steps::Complete => "6633bf98240d7b4e3ec3b4bc",
+            Steps::Completed => "6633bf98240d7b4e3ec3b4bc",
         }
     }
 }
@@ -76,11 +76,11 @@ impl LabelsData {
 pub struct Card {}
 
 impl Card {
-    pub async fn add_card(name: &str, label: &Labels, step: &Steps) {
+    pub async fn add_card(name: String, label: Labels, step: Steps) {
         trello_reposirtory::add_card::add_card(
-            name,
-            LabelsData::get_id(label),
-            StepData::get_id(step),
+            &name,
+            LabelsData::get_id(&label),
+            StepData::get_id(&step),
         )
         .await;
     }

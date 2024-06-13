@@ -39,7 +39,7 @@ pub enum Commands {
 pub async fn add_commands(add: &AddCommands) {
     match &add.add_command {
         AddSubCommands::Card { name, label, step } => {
-            Card::add_card(name, label, step).await;
+            Card::add_card(name.to_owned(), label.to_owned(), step.to_owned()).await;
         }
         AddSubCommands::Json { path } => {
             json_reader::process_cads_from_json(path).await;
