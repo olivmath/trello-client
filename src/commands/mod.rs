@@ -91,14 +91,13 @@ pub fn move_commands(mov: &MoveCommands) {
     }
 }
 
-pub fn remove_commands(remove: &RemoveCommands) {
+pub async fn remove_commands(remove: &RemoveCommands) {
     match &remove.remove_command {
         RemoveSubCommands::Card {
-            my_board,
-            card_name,
+            all,
             id,
         } => {
-            Card::remove_card(my_board, card_name.as_deref(), id.as_deref());
+            Card::remove_card(*all, id).await;
         }
     }
 }

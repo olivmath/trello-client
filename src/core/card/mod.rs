@@ -221,16 +221,11 @@ impl Card {
         );
     }
 
-    pub fn remove_card(my_board: &str, card_name: Option<&str>, card_id: Option<&str>) {
-        if let Some(card_name) = card_name {
-            println!("Removing card '{}' from board '{}'", card_name, my_board);
-            // println!("{:?}", RemoveCardOptions::CardName(card_name.to_string()));
-        } else if let Some(card_id) = card_id {
-            println!(
-                "Removing card with ID '{}' from board '{}'",
-                card_id, my_board
-            );
-            // println!("{:?}", RemoveCardOptions::CardId(card_id.to_string()));
+    pub async fn remove_card(all: bool, card_id: &Option<String>) {
+        if all {
+            trello_reposirtory::delete_card::delete_all_cards().await;
+        } else if let Some(id) = card_id {
+            trello_reposirtory::delete_card::delete_card(id).await;
         }
     }
 }
