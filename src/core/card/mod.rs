@@ -148,7 +148,7 @@ pub struct Card {
 impl Display for Card {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut labels = String::new();
-        self.id_labels.iter().for_each(| l | {
+        self.id_labels.iter().for_each(|l| {
             if l.is_empty() {
                 return labels.push_str("");
             }
