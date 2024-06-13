@@ -14,10 +14,9 @@ pub(crate) async fn add_card(name: &str, label: &str, step: &str) {
         "name": name,
     });
 
-    // punk approach
-    // Pass-by-Mutable-Reference
     let (card_id, short_url) = match post(&base_url, body).await {
         Ok(r) => {
+            let status_code = r.status();
             let text = r
                 .text()
                 .await
@@ -26,7 +25,7 @@ pub(crate) async fn add_card(name: &str, label: &str, step: &str) {
                 Ok(Card { id, short_url, .. }) => (id, short_url),
                 Err(e) => {
                     eprintln!("Failed to parse JSON: {:?}", e);
-                    eprintln!("{}", text);
+                    eprintln!("Status code: {}, reason: {}", status_code, text);
                     panic!()
                 }
             }
