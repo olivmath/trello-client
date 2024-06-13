@@ -2,7 +2,7 @@ use super::card::{Labels, Steps};
 use crate::core::card::Card;
 use serde::Deserialize;
 use serde_json::from_reader;
-use std::{fs::File, io::BufReader};
+use std::{env::var, fs::File, io::BufReader};
 use tokio;
 
 #[derive(Deserialize, Debug)]
@@ -17,22 +17,33 @@ pub async fn process_cads_from_json(file_path: &str) {
     let reader = BufReader::new(file);
 
     let cads: Vec<JsonCard> = from_reader(reader).unwrap();
-    let mut tasks = vec![];
 
-    for card in cads {
-        let name = card.name;
-        let label = card.label;
-        let step = card.step;
+    println!("✅ Add {} cards", cads.len());
 
-        // Spawn 1 thread for each card creation
-        let task = tokio::spawn(async move { Card::add_card(name, label, step).await });
+    let rate_limit = var("RATE_LIMIT")
+        .expect("RATE_LIMIT must be set")
+        .parse::<usize>()
+        .unwrap();
 
-        tasks.push(task);
-    }
+    for chunk in cads.chunks(rate_limit) {
+        let mut tasks = vec![];
 
-    for t in tasks {
-        if let Err(e) = t.await {
-            eprintln!("Erro Card Creation: {:?}", e);
+        for card in chunk {
+            let name = card.name.clone();
+            let label = card.label.clone();
+            let step = card.step.clone();
+
+            let task = tokio::spawn(async move {
+                Card::add_card(name, label, step).await
+            });
+
+            tasks.push(task);
+        }
+
+        for task in tasks {
+            if let Err(e) = task.await {
+                eprintln!("Erro Card Creation: {:?}", e);
+            }
         }
     }
 }
