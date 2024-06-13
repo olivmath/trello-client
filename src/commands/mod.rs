@@ -47,25 +47,18 @@ pub async fn add_commands(add: &AddCommands) {
     }
 }
 
-pub fn get_commands(get: &GetCommands) {
+pub async fn get_commands(get: &GetCommands) {
     match &get.get_command {
         GetSubCommands::Card {
-            my_board,
             all,
             step,
-            card_name,
             id,
         } => {
-            Card::get_card(
-                my_board,
-                *all,
-                step.as_deref(),
-                card_name.as_deref(),
-                id.as_deref(),
-            );
+            Card::get_card(*all, step, id).await
         }
     }
 }
+
 
 pub fn edit_commands(edit: &EditCommands) {
     match &edit.edit_command {

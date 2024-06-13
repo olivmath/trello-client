@@ -85,6 +85,16 @@ impl Card {
         .await;
     }
 
+    pub async fn get_card(all: bool, step: &Option<Steps>, card_id: &Option<String>) {
+        if all {
+            trello_reposirtory::get_card::get_all_cards().await;
+        } else if let Some(step) = step {
+            trello_reposirtory::get_card::get_all_cards_from_step(step.to_owned()).await;
+        } else if let Some(id) = card_id {
+            trello_reposirtory::get_card::get_card(id.to_owned()).await;
+        }
+    }
+
     pub fn move_card(my_board: &str, next: bool, back: bool, card_id: &str) {
         if next {
             println!(
@@ -112,34 +122,6 @@ impl Card {
             "Editing card with ID '{}' on board '{}': Name = {:?}, Label = {:?}, Color = {:?}",
             card_id, my_board, name, label, color
         );
-    }
-
-    pub fn get_card(
-        my_board: &str,
-        all: bool,
-        step: Option<&str>,
-        card_name: Option<&str>,
-        card_id: Option<&str>,
-    ) {
-        if all {
-            println!("Getting all cards from board '{}'", my_board);
-            // println!("{:?}", GetCardOptions::All);
-        } else if let Some(step) = step {
-            println!(
-                "Getting all cards from board '{}' in step '{}'",
-                my_board, step
-            );
-            // println!("{:?}", GetCardOptions::Step(step.to_string()));
-        } else if let Some(card_name) = card_name {
-            println!("Getting card '{}' from board '{}'", card_name, my_board);
-            // println!("{:?}", GetCardOptions::CardName(card_name.to_string()));
-        } else if let Some(card_id) = card_id {
-            println!(
-                "Getting card with ID '{}' from board '{}'",
-                card_id, my_board
-            );
-            // println!("{:?}", GetCardOptions::CardId(card_id.to_string()));
-        }
     }
 
     pub fn remove_card(my_board: &str, card_name: Option<&str>, card_id: Option<&str>) {

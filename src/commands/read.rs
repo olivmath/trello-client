@@ -1,4 +1,5 @@
-use clap::{Parser, Subcommand};
+use clap::{ArgGroup, Parser, Subcommand};
+use crate::core::card::Steps;
 
 #[derive(Parser)]
 pub struct GetCommands {
@@ -9,15 +10,16 @@ pub struct GetCommands {
 #[derive(Subcommand)]
 pub enum GetSubCommands {
     /// Get cards from the board
+    #[clap(group(
+        ArgGroup::new("card_options")
+            .required(true)
+            .args(&["all", "step", "id"]),
+    ))]
     Card {
-        #[arg(value_name = "my_board", short)]
-        my_board: String,
         #[arg(long)]
         all: bool,
         #[arg(long)]
-        step: Option<String>,
-        #[arg(value_name = "CARD_NAME", short)]
-        card_name: Option<String>,
+        step: Option<Steps>,
         #[arg(long)]
         id: Option<String>,
     },

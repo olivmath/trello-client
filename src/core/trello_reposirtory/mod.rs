@@ -1,3 +1,3 @@
 pub mod add_card;
-mod edit_card;
+pub mod get_card;
 mod utils;
