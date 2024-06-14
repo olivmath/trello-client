@@ -4,7 +4,7 @@ use trello_client::commands::{
     add_commands, edit_commands, get_commands, move_commands, remove_commands, Cli, Commands,
 };
 
-#[tokio::main]
+#[tokio::main(flavor = "multi_thread", worker_threads = 8)]
 async fn main() {
     dotenv().ok();
 
