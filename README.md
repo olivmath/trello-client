@@ -96,6 +96,18 @@ tc edit card --id $CARD_ID \
 tc remove card --id $CARD_ID
 ```
 
+- remove a card by step
+
+```bash
+tc remove card --step my_step
+```
+
+- remove a card by label
+
+```bash
+tc remove card --label my_label
+```
+
 > [!WARNING]
 > 🚨 Be careful with this command
 
