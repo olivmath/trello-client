@@ -2,19 +2,22 @@
 
 ## Roadmap
 
-| feature                | state |
-| ---------------------- | ----- |
-| add card               | ✅    |
-| add card from json     | ✅    |
-| get all cards          | ✅    |
-| get card by id         | ✅    |
-| get all cards by step  | ✅    |
-| get all cards by label | ✅    |
-| remove all card        | ✅    |
-| move card to next step | 🚨    |
-| move card to back step | 🚨    |
-| edit card by id        | 🚨    |
-| remove card by id      | 🚨    |
+| feature                   | state |
+| ------------------------- | ----- |
+| add card                  | ✅    |
+| add card from json        | ✅    |
+| get all cards             | ✅    |
+| get card by id            | ✅    |
+| get all cards by step     | ✅    |
+| get all cards by label    | ✅    |
+| remove all card           | ✅    |
+| remove card by id         | 🚨    |
+| remove all cards by step  | 🚨    |
+| remove all cards by label | 🚨    |
+| move card to next step    | 🚨    |
+| move card to back step    | 🚨    |
+| edit card by id           | 🚨    |
+| remove card by id         | 🚨    |
 
 ## Set up your `.env`
 
