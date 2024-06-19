@@ -1,4 +1,4 @@
-use crate::core::card::{Labels, Steps};
+use crate::core::trello_reposirtory::cards::{Labels, Steps};
 use clap::{ArgGroup, Parser, Subcommand};
 
 #[derive(Parser)]
@@ -12,8 +12,8 @@ pub enum GetSubCommands {
     /// Get cards from the board
     #[clap(group(
         ArgGroup::new("card_options")
-            .required(true)
-            .args(&["all", "step", "id", "label"]),
+        .required(true)
+        .args(& ["all", "step", "id", "label"]),
     ))]
     Card {
         #[arg(long)]
@@ -24,5 +24,17 @@ pub enum GetSubCommands {
         label: Option<Labels>,
         #[arg(long)]
         id: Option<String>,
+    },
+    /// Get Webhook by id
+    #[clap(group(
+    ArgGroup::new("webhook_options")
+    .required(true)
+    .args(& ["all", "id"]),
+))]
+    Webhook {
+        #[arg(long)]
+        id: Option<String>,
+        #[arg(long)]
+        all: bool,
     },
 }
