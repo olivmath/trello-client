@@ -8,11 +8,19 @@ pub struct RemoveCommands {
 
 #[derive(Subcommand)]
 pub enum RemoveSubCommands {
-    /// Remove a card
+    /// Remove a card or all cards
     Card {
         #[arg(long)]
         all: bool,
         #[arg(long)]
         id: Option<String>,
     },
+    /// Remove a webhook or all webhooks
+    Webhook {
+        #[arg(long)]
+        all: bool,
+        #[arg(long)]
+        id: Option<String>,
+    },
+
 }
