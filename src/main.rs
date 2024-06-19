@@ -1,6 +1,6 @@
 use clap::Parser;
 use dotenv::dotenv;
-use trello_client::commands::{
+use tc::commands::{
     add_commands, edit_commands, get_commands, move_commands, remove_commands, Cli, Commands,
 };
 
