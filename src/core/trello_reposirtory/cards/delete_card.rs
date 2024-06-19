@@ -1,9 +1,8 @@
-use crate::core::{card::Card, trello_reposirtory::utils::delete};
+use super::super::utils::get;
+use crate::core::{trello_reposirtory::cards::Card, trello_reposirtory::utils::delete};
 use std::env::var;
 
-use super::utils::get;
-
-pub async fn delete_card(id: &str) {
+pub async fn delete_card_by_id(id: &str) {
     let mut base_url = var("BASE_URL").expect("BASE_URL must be set");
     base_url.push_str("/cards/");
     base_url.push_str(id);
@@ -51,7 +50,7 @@ pub async fn delete_all_cards() {
                         for card in cards {
                             println!("{}", card);
                             let task = tokio::spawn(async move {
-                                delete_card(&card.id).await;
+                                delete_card_by_id(&card.id).await;
                             });
                             tasks.push(task);
                         }

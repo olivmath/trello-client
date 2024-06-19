@@ -1,5 +1,5 @@
-use super::utils::{post, put};
-use crate::core::card::{Card, LabelsData};
+use super::super::utils::{post, put};
+use crate::core::trello_reposirtory::cards::{Card, LabelsData};
 use serde_json::json;
 use std::env::var;
 

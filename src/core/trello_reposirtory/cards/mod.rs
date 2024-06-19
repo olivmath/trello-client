@@ -1,6 +1,9 @@
+pub mod add_card;
+pub mod delete_card;
+pub mod get_card;
+
 use std::fmt::Display;
 
-use crate::core::trello_reposirtory;
 use clap::ValueEnum;
 use serde::Deserialize;
 
@@ -167,12 +170,7 @@ impl Display for Card {
 
 impl Card {
     pub async fn add_card(name: String, label: Labels, step: Steps) {
-        trello_reposirtory::add_card::add_card(
-            &name,
-            LabelsData::get_id(&label),
-            StepData::get_id(&step),
-        )
-        .await;
+        add_card::add_card(&name, LabelsData::get_id(&label), StepData::get_id(&step)).await;
     }
 
     pub async fn get_card(
@@ -182,13 +180,13 @@ impl Card {
         card_id: &Option<String>,
     ) {
         if all {
-            trello_reposirtory::get_card::get_all_cards().await;
+            get_card::get_all_cards().await;
         } else if let Some(step) = step {
-            trello_reposirtory::get_card::get_all_cards_from_step(step.get_id()).await;
+            get_card::get_all_cards_from_step(step.get_id()).await;
         } else if let Some(label) = label {
-            trello_reposirtory::get_card::get_all_cards_from_label(label.get_id()).await;
+            get_card::get_all_cards_from_label(label.get_id()).await;
         } else if let Some(id) = card_id {
-            trello_reposirtory::get_card::get_card(id.to_owned()).await;
+            get_card::get_card(id.to_owned()).await;
         }
     }
 
@@ -223,9 +221,9 @@ impl Card {
 
     pub async fn remove_card(all: bool, card_id: &Option<String>) {
         if all {
-            trello_reposirtory::delete_card::delete_all_cards().await;
+            delete_card::delete_all_cards().await;
         } else if let Some(id) = card_id {
-            trello_reposirtory::delete_card::delete_card(id).await;
+            delete_card::delete_card_by_id(id).await;
         }
     }
 }

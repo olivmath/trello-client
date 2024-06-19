@@ -1,5 +1,5 @@
 use crate::core::{
-    card::{Card, LabelsData},
+    trello_reposirtory::cards::{Card, LabelsData},
     trello_reposirtory::utils::get,
 };
 use std::env::var;
