@@ -42,4 +42,13 @@ pub enum EditSubCommands {
         #[arg(long)]
         color: Option<String>,
     },
+    /// Edit a webhook
+    Webhook {
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        callback: String,
+        #[arg(long)]
+        active: Option<bool>,
+    },
 }
