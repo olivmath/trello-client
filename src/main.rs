@@ -14,7 +14,7 @@ async fn main() {
         Commands::Add(add) => add_commands(add).await,
         Commands::Get(get) => get_commands(get).await,
         Commands::Move(mov) => move_commands(mov),
-        Commands::Edit(edit) => edit_commands(edit),
+        Commands::Edit(edit) => edit_commands(edit).await,
         Commands::Remove(remove) => remove_commands(remove).await,
     }
 }
