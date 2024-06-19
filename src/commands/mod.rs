@@ -44,6 +44,9 @@ pub async fn add_commands(add: &AddCommands) {
         AddSubCommands::Json { path } => {
             json_reader::process_cads_from_json(path).await;
         }
+        AddSubCommands::Webhook { callback, name } => {
+            Webhook::add_webhook(name, callback).await;
+        }
     }
 }
 

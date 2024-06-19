@@ -1,4 +1,4 @@
-use crate::core::card::{Labels, Steps};
+use crate::core::trello_reposirtory::cards::{Labels, Steps};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -18,8 +18,16 @@ pub enum AddSubCommands {
         #[arg(long, value_enum)]
         step: Steps,
     },
+    /// Add cards from a json file
     Json {
         #[arg(long)]
         path: String,
+    },
+    /// Add a new webhook
+    Webhook {
+        #[arg(long)]
+        callback: String,
+        #[arg(long)]
+        name: String,
     },
 }
