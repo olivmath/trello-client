@@ -13,8 +13,8 @@ fn get_headers() -> HeaderMap {
 
 fn base_query<'a>() -> HashMap<&'a str, String> {
     let mut query = HashMap::new();
-    let key = var("API_KEY").expect("API_KEY must be set");
-    let token = var("TOKEN").expect("TOKEN must be set");
+    let key = var("APIKey").expect("APIKey must be set");
+    let token = var("APIToken").expect("APIToken must be set");
 
     query.insert("key", key);
     query.insert("token", token);
