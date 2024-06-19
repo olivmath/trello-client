@@ -1,5 +1,5 @@
-use super::card::{Labels, Steps};
-use crate::core::card::Card;
+use super::trello_reposirtory::cards::{Labels, Steps};
+use crate::core::trello_reposirtory::cards::Card;
 use serde::Deserialize;
 use serde_json::from_reader;
 use std::{env::var, fs::File, io::BufReader};
@@ -24,7 +24,6 @@ pub async fn process_cads_from_json(file_path: &str) {
         .expect("RATE_LIMIT must be set")
         .parse::<usize>()
         .unwrap();
-
     for chunk in cads.chunks(rate_limit) {
         let mut tasks = vec![];
 
@@ -33,9 +32,7 @@ pub async fn process_cads_from_json(file_path: &str) {
             let label = card.label.clone();
             let step = card.step.clone();
 
-            let task = tokio::spawn(async move {
-                Card::add_card(name, label, step).await
-            });
+            let task = tokio::spawn(async move { Card::add_card(name, label, step).await });
 
             tasks.push(task);
         }
