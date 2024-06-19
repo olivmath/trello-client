@@ -7,8 +7,9 @@ use crate::commands::create::AddSubCommands;
 use crate::commands::delete::RemoveSubCommands;
 use crate::commands::read::GetSubCommands;
 use crate::commands::update::{EditSubCommands, MoveSubCommands};
-use crate::core::card::Card;
 use crate::core::json_reader;
+use crate::core::trello_reposirtory::cards::Card;
+use crate::core::trello_reposirtory::webhooks::Webhook;
 use clap::{Parser, Subcommand};
 use create::AddCommands;
 use delete::RemoveCommands;
@@ -58,10 +59,12 @@ pub async fn get_commands(get: &GetCommands) {
             id,
             label,
         } => Card::get_card(*all, step, label, id).await,
+
+        GetSubCommands::Webhook { id, all } => Webhook::get_webhook(id.to_owned(), *all).await,
     }
 }
 
-pub fn edit_commands(edit: &EditCommands) {
+pub async fn edit_commands(edit: &EditCommands) {
     match &edit.edit_command {
         EditSubCommands::Card {
             my_board,
@@ -77,6 +80,13 @@ pub fn edit_commands(edit: &EditCommands) {
                 label.as_deref(),
                 color.as_deref(),
             );
+        }
+        EditSubCommands::Webhook {
+            id,
+            callback,
+            active,
+        } => {
+            Webhook::update_webhook_by_id(id, callback, *active).await;
         }
     }
 }
@@ -96,11 +106,11 @@ pub fn move_commands(mov: &MoveCommands) {
 
 pub async fn remove_commands(remove: &RemoveCommands) {
     match &remove.remove_command {
-        RemoveSubCommands::Card {
-            all,
-            id,
-        } => {
+        RemoveSubCommands::Card { all, id } => {
             Card::remove_card(*all, id).await;
+        }
+        RemoveSubCommands::Webhook { all, id } => {
+            Webhook::remove_webhook(*all, id.to_owned()).await;
         }
     }
 }
