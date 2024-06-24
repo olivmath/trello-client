@@ -2,138 +2,15 @@ pub mod add_card;
 pub mod delete_card;
 pub mod get_card;
 
-use std::fmt::Display;
-
-use clap::ValueEnum;
+use crate::core::labels::Labels;
+use crate::core::steps::Steps;
 use serde::Deserialize;
+use std::fmt::Display;
 
 #[derive(Debug)]
 enum MoveCardOptions {
     Next,
     Back,
-}
-
-#[derive(Deserialize, Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
-pub enum Steps {
-    Backlog,
-    PreProduction,
-    VisualIdentity,
-    Recording,
-    Review,
-    Editing,
-    Publish,
-    Completed,
-}
-
-impl Steps {
-    pub fn get_id(&self) -> &str {
-        StepData::get_id(self)
-    }
-}
-
-pub struct StepData;
-
-impl StepData {
-    pub fn get_id(step: &Steps) -> &str {
-        match step {
-            Steps::Backlog => "6633bf10887fb53e55941192",
-            Steps::PreProduction => "6633a2169d3a4098e4adcd18",
-            Steps::VisualIdentity => "6633a20b86f043945dfaed69",
-            Steps::Recording => "6633a227d4871d117fa5fd87",
-            Steps::Review => "6633a2399343322d437204b7",
-            Steps::Editing => "6633bf1ce15c02de31b3797d",
-            Steps::Publish => "6633a24310b855a087d3713a",
-            Steps::Completed => "6633bf98240d7b4e3ec3b4bc",
-        }
-    }
-
-    pub fn get_step_by_id(id: &str) -> Steps {
-        match id {
-            "6633bf10887fb53e55941192" => Steps::Backlog,
-            "6633a2169d3a4098e4adcd18" => Steps::PreProduction,
-            "6633a20b86f043945dfaed69" => Steps::VisualIdentity,
-            "6633a227d4871d117fa5fd87" => Steps::Recording,
-            "6633a2399343322d437204b7" => Steps::Review,
-            "6633bf1ce15c02de31b3797d" => Steps::Editing,
-            "6633a24310b855a087d3713a" => Steps::Publish,
-            "6633bf98240d7b4e3ec3b4bc" => Steps::Completed,
-            _ => panic!("Step id not exist"),
-        }
-    }
-}
-
-#[derive(Deserialize, Hash, Eq, PartialEq, Debug, Clone, ValueEnum)]
-pub enum Labels {
-    #[clap(alias = "pw3")]
-    ProductWeb3,
-    #[clap(alias = "bdo")]
-    BlockchainDevOps,
-    #[clap(alias = "ml")]
-    MachineLearning,
-    #[clap(alias = "w1")]
-    Web1,
-}
-
-impl Display for Labels {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Labels::ProductWeb3 => write!(f, "Product Web3"),
-            Labels::BlockchainDevOps => write!(f, "Blockchain DevOps"),
-            Labels::MachineLearning => write!(f, "Machine Learning"),
-            Labels::Web1 => write!(f, "Web 1"),
-        }
-    }
-}
-
-impl Labels {
-    pub fn get_id(&self) -> &str {
-        match self {
-            Labels::ProductWeb3 => "6633a8093462cf3f04d83047",
-            Labels::BlockchainDevOps => "6633a612abab8af0d5ef1f8d",
-            Labels::MachineLearning => "6633a8187180a66a1bdffb51",
-            Labels::Web1 => "6633a5a8b5ccb9f6c72301b9",
-        }
-    }
-}
-
-pub struct LabelsData;
-
-impl LabelsData {
-    pub fn get_color_by_id(label: &str) -> &str {
-        match label {
-            "6633a8093462cf3f04d83047" => "yellow",
-            "6633a612abab8af0d5ef1f8d" => "red",
-            "6633a8187180a66a1bdffb51" => "purple",
-            "6633a5a8b5ccb9f6c72301b9" => "green",
-            _ => panic!("label id not exist"),
-        }
-    }
-    pub fn get_id(label: &Labels) -> &str {
-        match label {
-            Labels::ProductWeb3 => "6633a8093462cf3f04d83047",
-            Labels::BlockchainDevOps => "6633a612abab8af0d5ef1f8d",
-            Labels::MachineLearning => "6633a8187180a66a1bdffb51",
-            Labels::Web1 => "6633a5a8b5ccb9f6c72301b9",
-        }
-    }
-    pub fn get_color(label: &Labels) -> &str {
-        match label {
-            Labels::ProductWeb3 => "yellow",
-            Labels::BlockchainDevOps => "red",
-            Labels::MachineLearning => "purple_dark",
-            Labels::Web1 => "green",
-        }
-    }
-
-    pub fn get_label_by_id(id: &str) -> Labels {
-        match id {
-            "6633a8093462cf3f04d83047" => Labels::ProductWeb3,
-            "6633a612abab8af0d5ef1f8d" => Labels::BlockchainDevOps,
-            "6633a8187180a66a1bdffb51" => Labels::MachineLearning,
-            "6633a5a8b5ccb9f6c72301b9" => Labels::Web1,
-            _ => panic!("label id not exist"),
-        }
-    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -155,7 +32,7 @@ impl Display for Card {
             if l.is_empty() {
                 return labels.push_str("");
             }
-            labels.push_str(&format!("{}, ", LabelsData::get_label_by_id(l)))
+            labels.push_str(&format!("{}, ", Labels::from_id(l)))
         });
         write!(
             f,
@@ -163,14 +40,14 @@ impl Display for Card {
             self.name,
             labels,
             self.short_url,
-            StepData::get_step_by_id(&self.id_list)
+            Steps::from_id(&self.id_list)
         )
     }
 }
 
 impl Card {
     pub async fn add_card(name: String, label: Labels, step: Steps) {
-        add_card::add_card(&name, LabelsData::get_id(&label), StepData::get_id(&step)).await;
+        add_card::add_card(&name, Labels::get_id(&label), Steps::get_id(&step)).await;
     }
 
     pub async fn get_card(
