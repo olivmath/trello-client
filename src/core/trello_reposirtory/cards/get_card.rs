@@ -1,6 +1,6 @@
 use crate::core::{
-    trello_reposirtory::cards::{Card, LabelsData},
-    trello_reposirtory::utils::get,
+    labels::Labels,
+    trello_reposirtory::{cards::Card, utils::get},
 };
 use std::env::var;
 
@@ -18,10 +18,7 @@ pub async fn get_all_cards_from_label(label: &str) {
     match response {
         Ok(r) => {
             if r.status().is_success() {
-                println!(
-                    "✅ Get all Card from Label: {:?}",
-                    LabelsData::get_label_by_id(label)
-                );
+                println!("✅ Get all Card from Label: {:?}", Labels::from_id(label));
                 let text = r
                     .text()
                     .await

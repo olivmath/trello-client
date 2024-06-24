@@ -1,5 +1,5 @@
 use super::super::utils::{post, put};
-use crate::core::trello_reposirtory::cards::{Card, LabelsData};
+use crate::core::{labels::Labels, trello_reposirtory::cards::Card};
 use serde_json::json;
 use std::env::var;
 
@@ -49,7 +49,7 @@ async fn edit_card(card_id: &str, label: &str, step: &str) {
     base_url.push_str("/cards/");
     base_url.push_str(card_id);
 
-    let color = LabelsData::get_color_by_id(label);
+    let color = Labels::get_color_by_id(label);
     let body = json!({
         "idCardSource": var("TEMPLATE_CARD_ID").expect("TEMPLATE_CARD_ID must be set"),
         "idList": step,
