@@ -1,4 +1,5 @@
-use super::trello_reposirtory::cards::{Labels, Steps};
+use super::labels::Labels;
+use super::steps::Steps;
 use crate::core::trello_reposirtory::cards::Card;
 use serde::Deserialize;
 use serde_json::from_reader;
