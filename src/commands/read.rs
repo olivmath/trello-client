@@ -1,4 +1,5 @@
-use crate::core::trello_reposirtory::cards::{Labels, Steps};
+use crate::core::labels::Labels;
+use crate::core::steps::Steps;
 use clap::{ArgGroup, Parser, Subcommand};
 
 #[derive(Parser)]

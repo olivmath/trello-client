@@ -22,5 +22,4 @@ pub enum RemoveSubCommands {
         #[arg(long)]
         id: Option<String>,
     },
-
 }
