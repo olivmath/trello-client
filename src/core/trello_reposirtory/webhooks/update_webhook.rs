@@ -49,7 +49,7 @@ pub(crate) async fn update_webhook_by_id(id: &str, callback: &str, active: Optio
     base_url.push_str("/tokens/");
     base_url.push_str(&token);
     base_url.push_str("/webhooks/");
-    base_url.push_str(&id);
+    base_url.push_str(id);
     let body = json!({
         "callbackURL": callback,
         "description": "Update",

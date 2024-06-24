@@ -30,8 +30,8 @@ pub async fn process_cads_from_json(file_path: &str) {
 
         for card in chunk {
             let name = card.name.clone();
-            let label = card.label.clone();
-            let step = card.step.clone();
+            let label = card.label;
+            let step = card.step;
 
             let task = tokio::spawn(async move { Card::add_card(name, label, step).await });
 
