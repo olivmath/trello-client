@@ -96,11 +96,11 @@ impl Card {
         );
     }
 
-    pub async fn remove_card(all: bool, card_id: &Option<String>) {
-        if all {
-            delete_card::delete_all_cards().await;
-        } else if let Some(id) = card_id {
-            delete_card::delete_card_by_id(id).await;
-        }
+    pub async fn remove_card(id: &str) {
+        delete_card::delete_card_by_id(id).await;
+    }
+
+    pub async fn remove_all_cards_by_labels(labels: &str) {
+        delete_card::delete_all_cards_from_labels(labels).await;
     }
 }

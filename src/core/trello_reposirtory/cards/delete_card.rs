@@ -1,6 +1,8 @@
 use super::super::utils::get;
+use crate::core::labels::Labels;
 use crate::core::{trello_reposirtory::cards::Card, trello_reposirtory::utils::delete};
 use std::env::var;
+use std::io::{self, Write};
 
 pub async fn delete_card_by_id(id: &str) {
     let mut base_url = var("BASE_URL").expect("BASE_URL must be set");
@@ -26,7 +28,7 @@ pub async fn delete_card_by_id(id: &str) {
     }
 }
 
-pub async fn delete_all_cards() {
+pub async fn delete_all_cards_from_labels(label: &str) {
     let mut base_url = var("BASE_URL").expect("BASE_URL must be set");
     let board_id = var("BOARD_ID").expect("BOARD_ID must be set");
 
@@ -45,22 +47,53 @@ pub async fn delete_all_cards() {
                     .unwrap_or_else(|_| "No response body".to_string());
                 match serde_json::from_str::<Vec<Card>>(&text) {
                     Ok(cards) => {
-                        let mut tasks = vec![];
+                        let filtered_cards: Vec<Card> = cards
+                            .into_iter()
+                            .filter(|card| card.id_labels.iter().any(|l| l == label))
+                            .collect();
 
-                        for card in cards {
-                            println!("{}", card);
-                            let task = tokio::spawn(async move {
-                                delete_card_by_id(&card.id).await;
-                            });
-                            tasks.push(task);
-                        }
+                        println!(
+                            "Found {} cards with the label '{}'",
+                            filtered_cards.len(),
+                            Labels::from_id(label)
+                        );
 
-                        for t in tasks {
-                            if let Err(e) = t.await {
-                                eprintln!("Erro Card Creation: {:?}", e);
+                        print!("Do you want to delete all? (y/n): ");
+                        io::stdout().flush().unwrap();
+
+                        let mut input = String::new();
+                        io::stdin()
+                            .read_line(&mut input)
+                            .expect("Failed to read line");
+                        let input = input.trim();
+
+                        match input {
+                            "y" => {
+                                let mut tasks = vec![];
+                                for card in filtered_cards {
+                                    let task = tokio::task::spawn(async move {
+                                        delete_card_by_id(&card.id).await;
+                                    });
+                                    tasks.push(task);
+                                }
+
+                                for t in tasks {
+                                    if let Err(e) = t.await {
+                                        eprintln!("Error deleting card: {:?}", e);
+                                    }
+                                }
+                                println!("✅ Deleted all cards");
+                            }
+                            "n" => {
+                                println!("These are the cards that would be deleted:");
+                                for card in filtered_cards {
+                                    println!("{}", card);
+                                }
+                            }
+                            _ => {
+                                println!("Invalid option. No cards were deleted.");
                             }
                         }
-                        println!("✅ Deleted all Card");
                     }
                     Err(e) => {
                         eprintln!("Failed to parse JSON: {:?}", e);

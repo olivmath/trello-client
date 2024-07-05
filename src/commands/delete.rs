@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand};
 
+use crate::core::labels::Labels;
+
 #[derive(Parser)]
 pub struct RemoveCommands {
     #[command(subcommand)]
@@ -11,9 +13,7 @@ pub enum RemoveSubCommands {
     /// Remove a card or all cards
     Card {
         #[arg(long)]
-        all: bool,
-        #[arg(long)]
-        id: Option<String>,
+        id: String,
     },
     /// Remove a webhook or all webhooks
     Webhook {
@@ -21,5 +21,9 @@ pub enum RemoveSubCommands {
         all: bool,
         #[arg(long)]
         id: Option<String>,
+    },
+    Course {
+        #[arg(long)]
+        name: Labels,
     },
 }

@@ -106,11 +106,14 @@ pub fn move_commands(mov: &MoveCommands) {
 
 pub async fn remove_commands(remove: &RemoveCommands) {
     match &remove.remove_command {
-        RemoveSubCommands::Card { all, id } => {
-            Card::remove_card(*all, id).await;
+        RemoveSubCommands::Card { id } => {
+            Card::remove_card(id).await;
         }
         RemoveSubCommands::Webhook { all, id } => {
             Webhook::remove_webhook(*all, id.to_owned()).await;
+        }
+        RemoveSubCommands::Course { name } => {
+            Card::remove_all_cards_by_labels(name.get_id()).await;
         }
     }
 }
