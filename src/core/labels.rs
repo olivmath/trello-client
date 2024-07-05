@@ -14,6 +14,8 @@ pub enum Labels {
     Web1,
     #[clap(alias = "iam")]
     IAMarketing,
+    #[clap(alias = "dp")]
+    DigitalPresence,
 }
 
 impl Display for Labels {
@@ -24,6 +26,7 @@ impl Display for Labels {
             Labels::MachineLearning => "Machine Learning",
             Labels::Web1 => "Web 1",
             Labels::IAMarketing => "IA Marketing",
+            Labels::DigitalPresence => "Digital Presence",
         };
         write!(f, "{}", label_str)
     }
@@ -36,6 +39,7 @@ impl Labels {
         "6633a8187180a66a1bdffb51", // MachineLearning
         "6633a5a8b5ccb9f6c72301b9", // Web1
         "6679de475bd63ac0ebc0bfe2", // IAMarketing
+        "6687fb679fae09274924feb1", // DigitalPresence
     ];
 
     const COLORS: &'static [&'static str] = &[
@@ -44,6 +48,7 @@ impl Labels {
         "purple", // MachineLearning
         "green",  // Web1
         "blue",   // IAMarketing
+        "pink",   // DigitalPresence
     ];
 
     pub fn get_id(&self) -> &str {
@@ -62,6 +67,7 @@ impl Labels {
                 2 => Labels::MachineLearning,
                 3 => Labels::Web1,
                 4 => Labels::IAMarketing,
+                5 => Labels::DigitalPresence,
                 _ => unreachable!(),
             },
             None => panic!("label {} is not a valid", id),
