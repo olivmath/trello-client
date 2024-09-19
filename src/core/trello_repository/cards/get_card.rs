@@ -1,6 +1,6 @@
 use crate::core::{
     labels::Labels,
-    trello_reposirtory::{cards::Card, utils::get},
+    trello_repository::{cards::Card, utils::get},
 };
 use std::env::var;
 

@@ -1,6 +1,6 @@
 use super::labels::Labels;
 use super::steps::Steps;
-use crate::core::trello_reposirtory::cards::Card;
+use crate::core::trello_repository::cards::Card;
 use serde::Deserialize;
 use serde_json::from_reader;
 use std::{env::var, fs::File, io::BufReader};

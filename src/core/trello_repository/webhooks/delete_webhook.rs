@@ -1,4 +1,4 @@
-use crate::core::trello_reposirtory::utils::{delete, get};
+use crate::core::trello_repository::utils::{delete, get};
 use std::env::var;
 
 use super::Webhook;

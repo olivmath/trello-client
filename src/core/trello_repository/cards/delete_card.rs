@@ -1,6 +1,6 @@
 use super::super::utils::get;
 use crate::core::labels::Labels;
-use crate::core::{trello_reposirtory::cards::Card, trello_reposirtory::utils::delete};
+use crate::core::{trello_repository::cards::Card, trello_repository::utils::delete};
 use std::env::var;
 use std::io::{self, Write};
 

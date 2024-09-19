@@ -1,4 +1,4 @@
-use crate::core::trello_reposirtory::utils::post;
+use crate::core::trello_repository::utils::post;
 use core::panic;
 use serde_json::json;
 use std::env::var;
