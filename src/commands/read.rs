@@ -10,6 +10,13 @@ pub struct GetCommands {
 
 #[derive(Subcommand)]
 pub enum GetSubCommands {
+    /// Get all labels from the board
+    Label {
+        #[arg(long)]
+        all: bool,
+        #[arg(long)]
+        step: Option<Steps>,
+    },
     /// Get cards from the board
     #[clap(group(
         ArgGroup::new("card_options")

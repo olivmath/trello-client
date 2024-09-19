@@ -16,6 +16,8 @@ pub enum Labels {
     IAMarketing,
     #[clap(alias = "dp")]
     DigitalPresence,
+    #[clap(alias = "fdy")]
+    Foundry101,
 }
 
 impl Display for Labels {
@@ -27,6 +29,7 @@ impl Display for Labels {
             Labels::Web1 => "Web 1",
             Labels::IAMarketing => "IA Marketing",
             Labels::DigitalPresence => "Digital Presence",
+            Labels::Foundry101 => "Foundry 101",
         };
         write!(f, "{}", label_str)
     }
@@ -34,12 +37,14 @@ impl Display for Labels {
 
 impl Labels {
     const IDS: &'static [&'static str] = &[
+        // get the id of the labels using `tc get labels`
         "6633a8093462cf3f04d83047", // ProductWeb3
         "6633a612abab8af0d5ef1f8d", // BlockchainDevOps
         "6633a8187180a66a1bdffb51", // MachineLearning
         "6633a5a8b5ccb9f6c72301b9", // Web1
         "6679de475bd63ac0ebc0bfe2", // IAMarketing
         "6687fb679fae09274924feb1", // DigitalPresence
+        "66ec90db2292971ec89bcf58", // Foundry101
     ];
 
     const COLORS: &'static [&'static str] = &[
@@ -49,6 +54,7 @@ impl Labels {
         "green",  // Web1
         "blue",   // IAMarketing
         "pink",   // DigitalPresence
+        "orange", // Foundry101
     ];
 
     pub fn get_id(&self) -> &str {
@@ -68,6 +74,7 @@ impl Labels {
                 3 => Labels::Web1,
                 4 => Labels::IAMarketing,
                 5 => Labels::DigitalPresence,
+                6 => Labels::Foundry101,
                 _ => unreachable!(),
             },
             None => panic!("label {} is not a valid", id),

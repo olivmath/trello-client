@@ -9,6 +9,7 @@ use crate::commands::read::GetSubCommands;
 use crate::commands::update::{EditSubCommands, MoveSubCommands};
 use crate::core::json_reader;
 use crate::core::trello_repository::cards::Card;
+use crate::core::trello_repository::labels::Labels; // Add this line
 use crate::core::trello_repository::webhooks::Webhook;
 use clap::{Parser, Subcommand};
 use create::AddCommands;
@@ -61,6 +62,7 @@ pub async fn get_commands(get: &GetCommands) {
         } => Card::get_card(*all, step, label, id).await,
 
         GetSubCommands::Webhook { id, all } => Webhook::get_webhook(id.to_owned(), *all).await,
+        GetSubCommands::Label { all, step } => Labels::get_labels(*all, step).await,
     }
 }
 
